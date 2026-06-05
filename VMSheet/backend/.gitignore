@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+
+# Logs
+*.log
+
+# Database
+*.sqlite
+*.db
+
+# Build
+build/
+dist/
+
+# Cache
+.cache/
+.npm
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/

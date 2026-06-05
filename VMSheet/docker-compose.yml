@@ -1,0 +1,36 @@
+services:
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:3000:80"
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    ports:  
+      - "127.0.0.1:5500:5500"
+    depends_on:
+      - db
+    environment:
+      DB_NAME: ProductCalculation_db
+      DB_ROOT_USER: postgres
+      DB_ROOT_PASS: admin
+      DB_HOST: db
+      DB_PORT: 5432
+      PORT: 5500
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ProductCalculation_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

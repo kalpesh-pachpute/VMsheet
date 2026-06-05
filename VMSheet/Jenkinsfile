@@ -1,0 +1,54 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Verify Tools') {
+            steps {
+                bat 'git --version'
+                bat 'docker --version'
+            }
+        }
+
+        stage('Build Application') {
+            steps {
+                dir('VMSheet/VMSheet') {
+                    bat 'docker compose build'
+                }
+            }
+        }
+
+        stage('Deploy Application') {
+            steps {
+                dir('VMSheet/VMSheet') {
+                    bat 'docker compose down'
+                    bat 'docker compose up -d'
+                    
+                }
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                bat 'docker ps'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment Successful'
+        }
+
+        failure {
+            echo 'Deployment Failed'
+        }
+    }
+}

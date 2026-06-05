@@ -1,0 +1,2 @@
+const SKUCalculationService = require('./services/spcServices'); console.log(require.resolve('./services/spcServices')); const svc = new SKUCalculationService(); console.log('contains expense_amount=', svc.createSKUCalculation.toString().includes('expense_amount')); console.log('method source begin:
+' + svc.createSKUCalculation.toString().slice(0,400));
