@@ -1,54 +1,62 @@
 pipeline {
 
-    agent any
+```
+agent any
 
-    stages {
+stages {
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
+    stage('Checkout') {
+        steps {
+            checkout scm
         }
+    }
 
-        stage('Verify Tools') {
-            steps {
-                bat 'git --version'
-                bat 'docker --version'
-            }
+    stage('Verify Tools') {
+        steps {
+            bat 'git --version'
+            bat 'docker --version'
         }
+    }
 
-        stage('Build Application') {
-            steps {
-                dir('VMSheet/VMSheet') {
-                    bat 'docker compose build'
-                }
-            }
+    stage('Clean Old Images') {
+        steps {
+            bat 'docker image prune -af'
         }
+    }
 
-        stage('Deploy Application') {
-            steps {
-                dir('VMSheet/VMSheet') {
-                    bat 'docker compose down'
-                    bat 'docker compose up -d'
-                    
-                }
-            }
-        }
-
-        stage('Verify Deployment') {
-            steps {
-                bat 'docker ps'
+    stage('Build Application') {
+        steps {
+            dir('VMSheet/VMSheet') {
+                bat 'docker compose build --no-cache'
             }
         }
     }
 
-    post {
-        success {
-            echo 'Deployment Successful'
-        }
-
-        failure {
-            echo 'Deployment Failed'
+    stage('Deploy Application') {
+        steps {
+            dir('VMSheet/VMSheet') {
+                bat 'docker compose down'
+                bat 'docker compose up -d'
+            }
         }
     }
+
+    stage('Verify Deployment') {
+        steps {
+            bat 'docker ps'
+        }
+    }
+}
+
+post {
+    success {
+        echo 'Deployment Successful'
+    }
+
+    failure {
+        echo 'Deployment Failed'
+    }
+}
+```
+
 }
