@@ -1175,7 +1175,7 @@ return (
     {/* LEFT */}
     <div>
       <h1 className="text-4xl font-black text-gray-900">
-        Products calculations
+        Products calculations Time
       </h1>
 
       <p className="text-gray-500 mt-1">
